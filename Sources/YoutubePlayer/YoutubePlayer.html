@@ -1,0 +1,103 @@
+<!--
+ Copyright 2014 Google Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <style>
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000000;
+      }
+      html {
+        width: 100%;
+        height: 100%;
+        background-color: #000000;
+      }
+
+      .embed-container iframe,
+      .embed-container object,
+      .embed-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="embed-container">
+      <div id="player"></div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      var player;
+      YT.ready(function () {
+        let options = INSERT_OPTIONS_HERE;
+        options.events = {
+          onReady: onReady,
+          onStateChange: onStateChange,
+          onPlaybackQualityChange: onPlaybackQualityChange,
+          onPlaybackRateChange: onPlaybackRateChange,
+          onError: onError,
+          onApiChange: onApiChange,
+        };
+        player = new YT.Player("player", options);
+        player.setSize(window.innerWidth, window.innerHeight);
+        callSwift("iFrameReady");
+      });
+
+      function onReady(event) {
+        callSwift("ready", event);
+      }
+
+      function onStateChange(event) {
+        callSwift("stateChanged", event);
+      }
+
+      function onPlaybackQualityChange(event) {
+        callSwift("playbackQualityChanged", event);
+      }
+
+      function onPlaybackRateChange(event) {
+        callSwift("playbackRateChanged", event);
+      }
+
+      function onError(event) {
+        callSwift("errorOccurred", event);
+      }
+
+      function onApiChange(event) {
+        callSwift("apiChanged", event);
+      }
+
+      function callSwift(eventName, event) {
+        let url = "ytplayer://" + eventName + "?data=";
+        if (event) {
+          url += event.data;
+        }
+        window.location.href = url;
+      }
+
+      window.onresize = function () {
+        player.setSize(window.innerWidth, window.innerHeight);
+      };
+    </script>
+  </body>
+</html>
