@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 open class YoutubePlayerView: UIView {
-    public static let blankURL = "about:blank"
+    private static let blankURL = "about:blank"
     private static let htmlInternalScheme = "ytplayer"
 
     fileprivate var webView: WKWebView!
@@ -26,6 +26,11 @@ open class YoutubePlayerView: UIView {
     /** Used to respond to player events */
     open weak var delegate: YoutubePlayerDelegate?
 
+    /**
+     Whether or not the user is allowed to tap links within this view and navigate into safari. Default is true.
+     */
+    var allowsExternalNavigation: Bool = true
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
         buildWebView()
@@ -38,7 +43,6 @@ open class YoutubePlayerView: UIView {
 
     override open func layoutSubviews() {
         super.layoutSubviews()
-
         // Remove web view in case it's within view hierarchy, reset frame, add as subview
         webView.removeFromSuperview()
         webView.frame = bounds
@@ -46,8 +50,6 @@ open class YoutubePlayerView: UIView {
     }
 
     fileprivate func buildWebView() {
-//        let jsScript  = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
-//        let userScript = WKUserScript(source: jsScript, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         let userContentController = WKUserContentController()
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
@@ -157,9 +159,8 @@ extension YoutubePlayerView {
 private extension YoutubePlayerView {
     func loadWebView(with options: YoutubePlayerOptions) throws {
         // Get HTML from player file in bundle
-        // Using exclamation points because if this fails it is packaging issue.
-        guard let playerHtmlPath = Bundle.module.url(forResource: "YoutubePlayer", withExtension: "html")
-        else {
+        // Using guard because if this fails it is packaging issue.
+        guard let playerHtmlPath = Bundle.module.url(forResource: "YoutubePlayer", withExtension: "html") else {
             return
         }
 
@@ -188,12 +189,14 @@ extension YoutubePlayerView: WKNavigationDelegate {
             handleJSEvent(url)
             action = .cancel
         } else if url.isHTTPScheme, navigationAction.navigationType == .linkActivated {
-            // Open any extenal navigation in youtube.
-            if UIApplication.shared.canOpenURL(url) {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url)
-                } else {
-                    UIApplication.shared.openURL(url)
+            if allowsExternalNavigation {
+                // Open any extenal navigation in youtube.
+                if UIApplication.shared.canOpenURL(url) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
                 }
             }
             action = .cancel
