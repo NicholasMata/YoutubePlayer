@@ -10,9 +10,7 @@ import UIKit
 import WebKit
 
 open class YoutubePlayerView: UIView {
-    public var baseURL = "about:blank"
-
-    private static htmlInternalScheme = "ytplayer"
+    private static let htmlInternalScheme = "ytplayer"
 
     fileprivate var webView: WKWebView!
 
