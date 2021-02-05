@@ -187,7 +187,7 @@ extension YoutubePlayerView: WKNavigationDelegate {
         if url.scheme == YoutubePlayerView.htmlInternalScheme {
             handleJSEvent(url)
             action = .cancel
-        } else if url.isHTTPScheme {
+        } else if url.isHTTPScheme, navigationAction.navigationType == .linkActivated {
             // Open any extenal navigation in youtube.
             if UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10.0, *) {
