@@ -5,13 +5,12 @@
 //  Created by Nicholas Mata on 12/21/14.
 //
 
+#if canImport(UIKit)
 import UIKit
 import WebKit
 
 open class YoutubePlayerView: UIView {
     public var baseURL = "about:blank"
-
-    fileprivate var playerHtmlPath = Bundle(for: YoutubePlayerView.self).url(forResource: "YoutubePlayer", withExtension: "html")
 
     fileprivate var webView: WKWebView!
 
@@ -159,7 +158,9 @@ private extension YoutubePlayerView {
     func loadWebView(with options: YoutubePlayerOptions) throws {
         // Get HTML from player file in bundle
         // Using exclamation points because if this fails it is packaging issue.
-        guard let playerHtmlPath = playerHtmlPath else {
+        guard let playerHtmlPath = Bundle(for: Self.self)
+            .url(forResource: "YoutubePlayer", withExtension: "html")
+        else {
             return
         }
 
@@ -167,8 +168,8 @@ private extension YoutubePlayerView {
 
         let jsonPlayerOptions = String(data: try! JSONEncoder().encode(options), encoding: .utf8)!
 
-        // Replace {INSERT_OPTIONS_HERE} in html contents with json object.
-        let finalHtml = html.replacingOccurrences(of: "{INSERT_OPTIONS_HERE}", with: jsonPlayerOptions)
+        // Replace INSERT_OPTIONS_HERE in html contents with json object.
+        let finalHtml = html.replacingOccurrences(of: "INSERT_OPTIONS_HERE", with: jsonPlayerOptions)
 
         // Load HTML in web view
         webView.loadHTMLString(finalHtml, baseURL: URL(string: baseURL))
@@ -216,3 +217,4 @@ private func printLog(_ strings: CustomStringConvertible...) {
     let toPrint = ["[YoutubePlayer]"] + strings
     print(toPrint, separator: " ", terminator: "\n")
 }
+#endif
