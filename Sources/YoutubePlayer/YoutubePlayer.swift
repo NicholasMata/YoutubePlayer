@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 
 open class YoutubePlayerView: UIView {
+    public static let blankURL = "about:blank"
     private static let htmlInternalScheme = "ytplayer"
 
     fileprivate var webView: WKWebView!
@@ -189,7 +190,7 @@ extension YoutubePlayerView: WKNavigationDelegate {
 
         if url.scheme == YoutubePlayerView.htmlInternalScheme {
             handleJSEvent(url)
-        } else {
+        } else if url.absoluteString != YoutubePlayerView.blankURL {
             // Open any extenal navigation in youtube.
             if UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10.0, *) {
