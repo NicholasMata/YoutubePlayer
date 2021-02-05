@@ -5,7 +5,6 @@
 //  Created by Nicholas Mata on 12/21/14.
 //
 
-#if canImport(UIKit)
 import UIKit
 import WebKit
 
@@ -178,19 +177,17 @@ private extension YoutubePlayerView {
 
 extension YoutubePlayerView: WKNavigationDelegate {
     open func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        var action: WKNavigationActionPolicy?
         defer {
-            decisionHandler(.cancel)
+            decisionHandler(action ?? .allow)
         }
 
         guard let url = navigationAction.request.url else { return }
 
-        guard navigationAction.navigationType != .linkActivated else {
-            return
-        }
-
         if url.scheme == YoutubePlayerView.htmlInternalScheme {
             handleJSEvent(url)
-        } else if url.absoluteString != YoutubePlayerView.blankURL {
+            action = .cancel
+        } else if url.isHTTPScheme {
             // Open any extenal navigation in youtube.
             if UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10.0, *) {
@@ -199,6 +196,7 @@ extension YoutubePlayerView: WKNavigationDelegate {
                     UIApplication.shared.openURL(url)
                 }
             }
+            action = .cancel
         }
     }
 
@@ -228,4 +226,9 @@ private func printLog(_ strings: CustomStringConvertible...) {
     let toPrint = ["[YoutubePlayer]"] + strings
     print(toPrint, separator: " ", terminator: "\n")
 }
-#endif
+
+internal extension URL {
+    var isHTTPScheme: Bool {
+        return scheme?.lowercased().hasPrefix("http") ?? false
+    }
+}
