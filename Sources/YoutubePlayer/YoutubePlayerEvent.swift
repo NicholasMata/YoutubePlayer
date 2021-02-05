@@ -28,7 +28,7 @@ public enum YoutubePlayerEvent {
      
      When the player first loads a video, it will broadcast an unstarted (-1) event. When a video is cued and ready to play, the player will broadcast a video cued (5) event. In your code, you can specify the integer values or you can use one of cases available in `YoutubePlayerState`
      */
-    case stateChanged(state: YoutubePlayerState)
+    case stateChanged(YoutubePlayerState)
     /**
      This event fires whenever the video playback quality changes.
      
@@ -44,7 +44,7 @@ public enum YoutubePlayerEvent {
      
      In your code, you can specify the string values or you can use one of cases available in `YoutubePlaybackQuality`
      */
-    case playbackQualityChanged(quality: YoutubePlaybackQuality)
+    case playbackQualityChanged(YoutubePlaybackQuality)
     /**
      This event fires whenever the video playback rate changes.
      
@@ -52,7 +52,7 @@ public enum YoutubePlayerEvent {
 
      The data property value of the event object that the API passes to the event listener function will be a number that identifies the new playback rate. The getAvailablePlaybackRates method returns a list of the valid playback rates for the currently cued or playing video.
      */
-    case placybackRateChanged(rate: Int)
+    case placybackRateChanged(Int)
     /**
      This event fires if an error occurs in the player.
      
@@ -63,17 +63,17 @@ public enum YoutubePlayerEvent {
      - 101 – The owner of the requested video does not allow it to be played in embedded players.
      - 150 – This error is the same as 101. It's just a 101 error in disguise!
      */
-    case errorOccurred(error: YoutubePlayerError)
+    case errorOccurred(YoutubePlayerError)
     /**
      This event is fired to indicate that the player has loaded (or unloaded) a module with exposed API methods.
      
      Your application can listen for this event and then poll the player to determine which options are exposed for the recently loaded module. Your application can then retrieve or update the existing settings for those options.
      */
-    case apiChanged(rawData: String?)
+    case apiChanged(String?)
     /**
      This event is called in case any of the other events can't fully parse an event or youtube api is changed.
      */
-    case unknown(eventName: String, data: String?)
+    case unknown(String, String?)
     init(eventName: String, data: String?) {
         switch eventName {
         case "iFrameReady":
@@ -82,32 +82,32 @@ public enum YoutubePlayerEvent {
             self = .ready
         case "stateChanged":
             if let stateValue = data, let state = YoutubePlayerState(rawValue: stateValue) {
-                self = .stateChanged(state: state)
+                self = .stateChanged(state)
             } else {
-                self = .unknown(eventName: eventName, data: data)
+                self = .unknown(eventName, data)
             }
         case "playbackQualityChanged":
             if let qualityValue = data, let quality = YoutubePlaybackQuality(rawValue: qualityValue) {
-                self = .playbackQualityChanged(quality: quality)
+                self = .playbackQualityChanged(quality)
             } else {
-                self = .unknown(eventName: eventName, data: data)
+                self = .unknown(eventName, data)
             }
         case "playbackRateChanged":
             if let rateValue = data, let rate = Int(rateValue) {
-                self = .placybackRateChanged(rate: rate)
+                self = .placybackRateChanged(rate)
             } else {
-                self = .unknown(eventName: eventName, data: data)
+                self = .unknown(eventName, data)
             }
         case "errorOccurred":
             if let errorValue = data, let error = YoutubePlayerError(rawValue: errorValue) {
-                self = .errorOccurred(error: error)
+                self = .errorOccurred(error)
             } else {
-                self = .unknown(eventName: eventName, data: data)
+                self = .unknown(eventName, data)
             }
         case "apiChanged":
-            self = .apiChanged(rawData: data)
+            self = .apiChanged(data)
         default:
-            self = .unknown(eventName: eventName, data: data)
+            self = .unknown(eventName, data)
         }
     }
 }

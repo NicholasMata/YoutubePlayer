@@ -122,15 +122,26 @@ extension YoutubePlayerView {
         evaluatePlayerCommand("seekTo(\(seconds), \(seekAhead))")
     }
 
-    open func getDuration(completion: ((Double?) -> Void)? = nil) {
-        evaluatePlayerCommand("getDuration()") { result in
-            completion?(result as? Double)
-        }
+    open func getDuration(completion: @escaping (Result<Double, Error>) -> Void) {
+        evaluatePlayerCommand("getDuration()", completion: parseDouble(completion))
     }
 
-    open func getCurrentTime(completion: ((Double?) -> Void)? = nil) {
-        evaluatePlayerCommand("getCurrentTime()") { result in
-            completion?(result as? Double)
+    open func getCurrentTime(completion: @escaping (Result<Double, Error>) -> Void) {
+        evaluatePlayerCommand("getCurrentTime()", completion: parseDouble(completion))
+    }
+
+    func parseDouble(_ completion: @escaping (Result<Double, Error>) -> Void) -> (Result<Any, Error>) -> Void {
+        return { (result: Result<Any, Error>) in
+            switch result {
+            case .success(let value):
+                if let duration = value as? Double {
+                    completion(.success(duration))
+                } else {
+                    completion(.failure(YoutubePlayerExecutionError.unableToParse(value)))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 
@@ -142,16 +153,19 @@ extension YoutubePlayerView {
         evaluatePlayerCommand("nextVideo()")
     }
 
-    fileprivate func evaluatePlayerCommand(_ command: String, completion: ((Any?) -> Void)? = nil) {
+    fileprivate func evaluatePlayerCommand(_ command: String, completion: ((Result<Any, Error>) -> Void)? = nil) {
         let fullCommand = "player." + command + ";"
         webView.evaluateJavaScript(fullCommand) { result, error in
-            if let error = error, (error as NSError).code != 5 { // NOTE: ignore :Void return
-                print(error)
-                printLog("Error executing javascript")
-                completion?(nil)
+            guard let result = result else {
+                if let error = error {
+                    completion?(.failure(error))
+                } else {
+                    completion?(.failure(YoutubePlayerExecutionError.unknown))
+                }
+                return
             }
 
-            completion?(result)
+            completion?(.success(result))
         }
     }
 }
