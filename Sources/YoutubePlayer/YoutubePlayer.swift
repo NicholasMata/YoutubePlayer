@@ -171,7 +171,7 @@ private extension YoutubePlayerView {
         let finalHtml = html.replacingOccurrences(of: "INSERT_OPTIONS_HERE", with: jsonPlayerOptions)
 
         // Load HTML in web view
-        webView.loadHTMLString(finalHtml, baseURL: URL(string: baseURL))
+        webView.loadHTMLString(finalHtml, baseURL: nil)
     }
 }
 
