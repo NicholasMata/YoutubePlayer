@@ -12,6 +12,8 @@ import WebKit
 open class YoutubePlayerView: UIView {
     public var baseURL = "about:blank"
 
+    private static htmlInternalScheme = "ytplayer"
+
     fileprivate var webView: WKWebView!
 
     /** The readiness of the player */
@@ -177,16 +179,27 @@ private extension YoutubePlayerView {
 
 extension YoutubePlayerView: WKNavigationDelegate {
     open func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        var action: WKNavigationActionPolicy?
         defer {
-            decisionHandler(action ?? .allow)
+            decisionHandler(.cancel)
         }
 
         guard let url = navigationAction.request.url else { return }
 
-        if url.scheme == "ytplayer" {
+        guard navigationAction.navigationType != .linkActivated else {
+            return
+        }
+
+        if url.scheme == YoutubePlayerView.htmlInternalScheme {
             handleJSEvent(url)
-            action = .cancel
+        } else {
+            // Open any extenal navigation in youtube.
+            if UIApplication.shared.canOpenURL(url) {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
         }
     }
 
