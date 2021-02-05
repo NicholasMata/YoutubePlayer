@@ -158,8 +158,7 @@ private extension YoutubePlayerView {
     func loadWebView(with options: YoutubePlayerOptions) throws {
         // Get HTML from player file in bundle
         // Using exclamation points because if this fails it is packaging issue.
-        guard let playerHtmlPath = Bundle(for: Self.self)
-            .url(forResource: "YoutubePlayer", withExtension: "html")
+        guard let playerHtmlPath = Bundle.module.url(forResource: "YoutubePlayer", withExtension: "html")
         else {
             return
         }
