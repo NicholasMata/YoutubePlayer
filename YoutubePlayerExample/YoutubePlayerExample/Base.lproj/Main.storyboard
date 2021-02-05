@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="YoutubePlayerExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wgl-1j-lTU">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mjt-ng-dtl">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="450"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aqe-uU-FfZ" customClass="YoutubePlayerView" customModule="YoutubePlayer">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="220"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="220" id="lq2-ox-t2t"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="eaA-tM-OOx">
+                                                <rect key="frame" x="0.0" y="240" width="414" height="210"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-FZ-bhB">
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAa-VJ-e0x">
+                                                                <rect key="frame" x="0.0" y="0.0" width="131.5" height="30"/>
+                                                                <state key="normal" title="Previous"/>
+                                                                <connections>
+                                                                    <action selector="prev:" destination="BYZ-38-t0r" eventType="touchUpInside" id="muO-9D-EjU"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tiu-SI-jWi">
+                                                                <rect key="frame" x="141.5" y="0.0" width="131" height="30"/>
+                                                                <state key="normal" title="Play"/>
+                                                                <connections>
+                                                                    <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p2m-5r-IHf"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8u8-M5-m3H">
+                                                                <rect key="frame" x="282.5" y="0.0" width="131.5" height="30"/>
+                                                                <state key="normal" title="Next"/>
+                                                                <connections>
+                                                                    <action selector="next:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Quo-ze-6v2"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uzp-Ar-CWP">
+                                                        <rect key="frame" x="0.0" y="60" width="414" height="30"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IDe-Oz-RQ1">
+                                                                <rect key="frame" x="0.0" y="0.0" width="202" height="30"/>
+                                                                <state key="normal" title="Load Video"/>
+                                                                <connections>
+                                                                    <action selector="loadVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="49P-NA-Wij"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uug-Bw-eEd">
+                                                                <rect key="frame" x="212" y="0.0" width="202" height="30"/>
+                                                                <state key="normal" title="Load Playlist"/>
+                                                                <connections>
+                                                                    <action selector="loadPlaylist:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nqe-ot-zR2"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLB-Fd-XHu">
+                                                        <rect key="frame" x="0.0" y="120" width="414" height="30"/>
+                                                        <state key="normal" title="Current Time"/>
+                                                        <connections>
+                                                            <action selector="getCurrentTime" destination="BYZ-38-t0r" eventType="touchUpInside" id="5nY-UT-EPp"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1oD-r9-1MT">
+                                                        <rect key="frame" x="0.0" y="180" width="414" height="30"/>
+                                                        <state key="normal" title="Duration"/>
+                                                        <connections>
+                                                            <action selector="getDuration" destination="BYZ-38-t0r" eventType="touchUpInside" id="U4U-8a-m3x"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="hB8-zM-DaW" firstAttribute="leading" secondItem="mjt-ng-dtl" secondAttribute="leading" id="6ii-ex-KbB"/>
+                                    <constraint firstItem="mjt-ng-dtl" firstAttribute="trailing" secondItem="hB8-zM-DaW" secondAttribute="trailing" id="91V-LZ-SaI"/>
+                                    <constraint firstItem="hB8-zM-DaW" firstAttribute="top" secondItem="mjt-ng-dtl" secondAttribute="top" id="AnZ-z4-2lj"/>
+                                    <constraint firstItem="mjt-ng-dtl" firstAttribute="width" secondItem="hYU-PD-jKE" secondAttribute="width" id="B2i-b9-qd8"/>
+                                    <constraint firstItem="hB8-zM-DaW" firstAttribute="bottom" secondItem="mjt-ng-dtl" secondAttribute="bottom" id="tHm-Gz-nSu"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="hB8-zM-DaW"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="hYU-PD-jKE"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Wgl-1j-lTU" secondAttribute="trailing" id="2hn-Vi-daI"/>
+                            <constraint firstItem="Wgl-1j-lTU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Lk5-Rx-Itf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Wgl-1j-lTU" secondAttribute="bottom" id="X1M-LP-YTG"/>
+                            <constraint firstItem="Wgl-1j-lTU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hEg-vB-b4Q"/>
+                            <constraint firstItem="mjt-ng-dtl" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="zoU-UC-okO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="playButton" destination="Tiu-SI-jWi" id="bUh-Gx-pCU"/>
+                        <outlet property="playerView" destination="Aqe-uU-FfZ" id="LtC-un-G0i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="14" y="89"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
